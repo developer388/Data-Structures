@@ -1,3 +1,19 @@
+/*
+Implement stack using linked list
+
+algo:
+    inititaly, we will a new node and set the top to new_node
+    
+    push operation:
+    we will create new node and set its next to the top
+    we will set the top to newly added node
+    
+    pop operation:
+    we will store the value of top node in result variable
+    we will set the top to top.next
+
+*/
+
 class Node {
     constructor(element) {
         this.data = element

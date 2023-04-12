@@ -69,6 +69,7 @@ console.log(queue.dequeue())
 console.log(queue.array)
 
 /*
+Concept:
 
 https://www.youtube.com/watch?v=8sjFA-IX-Ww
 
