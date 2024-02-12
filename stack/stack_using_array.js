@@ -55,3 +55,15 @@ console.log(stack.pop())
 console.log(stack.array)
 
 
+/*
+
+Points to remember:
+
+    stack is full if top == stack_array.length - 1
+
+    during push operation use pre-increment operator
+
+    during pop operation use post-increment operator
+
+
+*/

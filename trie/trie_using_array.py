@@ -59,11 +59,12 @@ class Trie:
 		return False
 
 trie = Trie()
-trie.insert('aa')
-trie.insert('aant')
+# trie.insert('aa')
+# trie.insert('aant')
 trie.insert('apple')
-trie.insert('apply')
+# trie.insert('apply')
 
-print(trie.search('apple'))
-print(trie.delete('aa'))
-print(trie.search('aa'))
+print(trie.root.children[0][0])
+# print(trie.search('apple'))
+# print(trie.delete('aa'))
+# print(trie.search('aa'))

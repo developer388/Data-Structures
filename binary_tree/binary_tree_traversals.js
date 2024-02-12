@@ -1,4 +1,4 @@
-Array.prototype.dequeue = Array.prototype.shift
+ Array.prototype.dequeue = Array.prototype.shift
 Array.prototype.enqueue = Array.prototype.push
 Array.prototype.peek = function() {
     return this[this.length-1]
@@ -96,7 +96,7 @@ function postOrderTraversal (node) {
 
             node = stack.peek()
 
-            if (node.right === null || node.right === previous) {
+            if (node.right === null || node.right === previous) {    // node.right === null (when current node is leaf node)   node.right == previous (when current node is not leaf node)
                 result.push(node.data)
                 stack.pop()
                 previous = node
@@ -135,6 +135,62 @@ function levelOrderTraversal (node) {
     return result
 }
 
+
+
+/*
+function preOrderRecursive(node) {
+    if (!node) {
+        return
+    }
+    console.log(node.data)
+    this.preOrderRecursive(node.left)
+    this.preOrderRecursive(node.right)
+}
+    
+function inOrderRecursive(node) {
+    if (!node) {
+        return
+    }
+    this.inOrderRecursive(node.left)
+    console.log(node.data)
+    this.inOrderRecursive(node.right)
+}
+
+function postOrderRecursive(node) {
+    if (!node) {
+        return
+    }
+    
+    this.postOrderRecursive(node.left)
+    this.postOrderRecursive(node.right)
+    console.log(node.data)
+}
+
+
+function preOrderRecursive(node) {
+    if (!node) {
+        return []
+    }
+    return [node.data].concat(this.preOrderRecursive(node.left)).concat(this.preOrderRecursive(node.right))
+}
+    
+function inOrderRecursive(node) {
+    if (!node) {
+        return []
+    }
+    return this.inOrderRecursive(node.left).concat([node.data]).concat(this.inOrderRecursive(node.right))
+}
+
+function postOrderRecursive(node) {
+    if (!node) {
+        return []
+    }    
+    return this.postOrderRecursive(node.left).concat(this.postOrderRecursive(node.right)).concat([node.data])
+}
+
+*/
+
+
 const tree = new Tree()
 tree.root = new Node(1)
 tree.root.left = new Node(2)
@@ -148,6 +204,7 @@ console.log("PreOrder Traversal: ", preOrderTraversal(tree.root))
 console.log("InOrder Traversal: ", inOrderTraversal(tree.root))
 console.log("PostOrder Traversal: ", postOrderTraversal(tree.root))
 console.log("LevelOrder Traversal: ", levelOrderTraversal(tree.root))
+
 
 
 

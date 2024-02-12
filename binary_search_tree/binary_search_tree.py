@@ -3,6 +3,14 @@ sys.path.append('..')
 
 from binary_tree.binary_tree_traversals import BinaryTree
 
+'''
+ Points to remember
+ - new node inserted always ends up as the leaf node.
+
+
+
+'''
+
 class Node:
 	def __init__(self, value):
 		self.value = value
@@ -58,6 +66,20 @@ class BinarySearchTree(BinaryTree):
 				node = node.right
 		
 		return True
+
+	def insertRecursively(self, node, value):
+
+		if node is None:
+			node = Node(value)
+			return node
+
+		if value < node.value:
+			node.left =  self.insertRecursively(node.left, value)
+		else:
+			node.right = self.insertRecursively(node.right, value)
+
+		return node
+
 
 	def delete(self, value):
 		node = self.root
@@ -119,10 +141,36 @@ class BinarySearchTree(BinaryTree):
 							parent.left = None					  #      else parent.left = null as it is already pointing to smallest left most value
 						break
 
+	def deleteRecursively(self, node, value):
+
+		if node is None:
+			return None
+
+		if value < node.value:
+			node.left =  self.deleteRecursively(node.left, value)
+		elif value > node.value:
+			node.right = self.deleteRecursively(node.right, value)
+		else:
+
+			if node.left is None and node.right is None:         # node to be deleted is a leaf node
+				return None
+
+			if node.left is None or node.right is None:          # node to be deleted has one child
+				return node.left or node.right
+
+			node.value = self.min(node.right)                    # node to be deleted has two child nodes
+			node.right = self.deleteRecursively(node.right, node.value)
+
+		return node
+
 	def predecessor(self, value):
 		"""
 		The predecessor of a node in BST is that node that will be visited just before the given node in the inorder traversal of the tree.
 		If the given node is visited first in the inorder traversal, then its predecessor is NULL.
+
+        Logic:
+		  if matching node has no left subtree, then the immediate smaller value is in parent node
+		  if matching node has left subtree, then immediate smaller value is maximum value in left subtree of given value
 		"""
 		node = self.root
 		predecessor = None
@@ -146,6 +194,12 @@ class BinarySearchTree(BinaryTree):
 		"""
 		The successor of a node in BST is that node that will be visited immediately after the given node in the inorder traversal of the tree.
 		If the given node is visited last in the inorder traversal, then its successor is NULL.
+		
+        Logic:
+		  if matching node has no right subtree, then the immediate greater value is in parent node
+		  if matching node has right subtree, then immediate greater value is minimum value in left subtree 
+		
+
 		"""
 		node = self.root
 		successor = None
@@ -196,21 +250,29 @@ class BinarySearchTree(BinaryTree):
 bst = BinarySearchTree()
 
 
-input_values = [40,30,70,35,50,34,37,32,36,38,39] # sample binary tree illustrated below#
+input_values = [30,70,35,50,34,37,32,36,38,39] # sample binary tree illustrated below#
+
+bst.root = bst.insertRecursively(bst.root, 40)
+
 for value in input_values:
-	bst.insert(value)
+	bst.insertRecursively(bst.root, value)
 
 #print('PreOrderTraversal: ',bst.preOrderTraversal(),  len(bst.preOrderTraversal()))
 #bst.delete(33)
 #print('PreOrderTraversal: ',bst.preOrderTraversal(), len(bst.preOrderTraversal()))
 
+print(bst.root)
+print(bst.inOrderTraversalRecursive(bst.root))
 
-#print(bst.successor(30))
+bst.deleteRecursively(bst.root, 36)
+print(bst.inOrderTraversalRecursive(bst.root))
+
+
 #print(bst.lowestCommonAncestor(36,39))
-node = bst.convertSortedArrayToBST([1, 2, 3,4,5,6,7,8], 0, 7)
+# node = bst.convertSortedArrayToBST([1, 2, 3,4,5,6,7,8], 0, 7)
 
-tree = BinaryTree(node)
-print(tree.preOrderTraversal())
+# tree = BinaryTree(node)
+# print(tree.preOrderTraversal())
 
 
 

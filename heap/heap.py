@@ -1,84 +1,93 @@
 class MaxHeap:
-    def __init__(self):
-        self.array = []
+	def __init__(self):
+		self.array = []
 
-    def insert(self, value):
-        self.array.append(value)
-        index_of_node = len(self.array)-1
-        index_of_parent = 0
+	def insert(self, value):
+		self.array.append(value)
+		index_of_node = len(self.array)-1
+		index_of_parent = 0
 
-        while index_of_node > 0:
-            index_of_parent = int((index_of_node-1)/2)
+		while index_of_node > 0:
+			index_of_parent = int((index_of_node-1)/2)
 
-            if self.array[index_of_node] > self.array[index_of_parent]:
-                self.array[index_of_node], self.array[index_of_parent] = self.array[index_of_parent], self.array[index_of_node]
-                index_of_node = index_of_parent
-            else:
-                break
-            
+			if self.array[index_of_node] > self.array[index_of_parent]:
+				self.array[index_of_node], self.array[index_of_parent] = self.array[index_of_parent], self.array[index_of_node]
+				index_of_node = index_of_parent
+			else:
+				break
+			
 
-    def remove(self):
+	def remove(self):
 
-        if len(self.array) == 0:
-            return None
+		if len(self.array) == 0:
+			return None
 
-        if len(self.array) == 1:
-            return self.array.pop()
+		if len(self.array) == 1:
+			return self.array.pop()
 
-        result = self.array[0]
+		result = self.array[0]
 
-        self.array[0] = self.array.pop()
+		self.array[0] = self.array.pop()
 
-        index_of_node = 0
-        index_of_left_child = 0
-        index_of_right_child = 0
+		index_of_parent = 0
+		index_of_left_child = 0
+		index_of_right_child = 0
 
-        while index_of_node < len(self.array):
-            
-            index_of_left_child = (index_of_node * 2) + 1
-            index_of_right_child = (index_of_node * 2) + 2
+		while index_of_parent < len(self.array):
+			
+			index_of_left_child = (index_of_parent * 2) + 1
+			index_of_right_child = (index_of_parent * 2) + 2
 
-            if index_of_left_child < len(self.array) and self.array[index_of_node] < self.array[index_of_left_child]:
-                self.array[index_of_node], self.array[index_of_left_child] = self.array[index_of_left_child], self.array[index_of_node]
-                index_of_node = index_of_left_child
-            
-            elif index_of_right_child < len(self.array) and self.array[index_of_node] < self.array[index_of_right_child]:
-                self.array[index_of_node], self.array[index_of_right_child] = self.array[index_of_right_child], self.array[index_of_node]
-                index_of_node = index_of_right_child
-            else:
-                break
-            
+			index_of_smallest_child = index_of_parent
 
-        return result
+			if index_of_left_child < len(self.array) and self.array[index_of_left_child] > self.array[index_of_smallest_child]:
+				index_of_smallest_child = index_of_left_child
+			
+			if index_of_right_child < len(self.array) and self.array[index_of_right_child] > self.array[index_of_smallest_child]:
+				index_of_smallest_child = index_of_right_child
+			
+			if index_of_smallest_child == index_of_parent:
+				break
 
-    def heapify(self, array, i):
-        index_of_left_child = (2 * i) + 1
-        index_of_right_child = (2 * i) + 2
+			self.array[index_of_parent], self.array[index_of_smallest_child] = self.array[index_of_smallest_child], self.array[index_of_parent]
+			index_of_parent = index_of_smallest_child 
 
-        if index_of_left_child < len(array) and array[i] < array[index_of_left_child]:
-            array[i], array[index_of_left_child] = array[index_of_left_child], array[i]
-            self.heapify(array, index_of_left_child)    
-        
-        if index_of_right_child < len(array) and array[i] < array[index_of_right_child]:
-            array[i], array[index_of_right_child] = array[index_of_right_child], array[i]
-            self.heapify(array, index_of_right_child)   
+		return result
 
-    def buildHeap(self, array):
-        start_index = int(len(array)/2)
+	def heapifyDown(self, index_of_parent, array):
+		index_of_left_child = (2 * index_of_parent) + 1
+		index_of_right_child = (2 * index_of_parent) + 2
 
-        for i in range(start_index, -1, -1):
-            print(f'self.heapify(array, {i})')
-            self.heapify(array, i)
+		index_of_smallest_child = index_of_parent
 
+		if index_of_left_child < len(array) and array[index_of_left_child] > array[index_of_smallest_child] :
+			index_of_smallest_child = index_of_left_child
 
+		if index_of_right_child < len(array) and array[index_of_right_child] > array[index_of_smallest_child] :
+			index_of_smallest_child = index_of_right_child
+
+		if index_of_smallest_child != index_of_parent:
+			array[index_of_parent], array[index_of_smallest_child] = array[index_of_smallest_child], array[index_of_parent]
+			self.heapifyDown(index_of_smallest_child, array)
+		
+	def buildHeap(self, array):
+		index_of_last_non_leaf_node = (len(array)//2) -1 
+
+		for i in range(index_of_last_non_leaf_node, -1, -1):
+			self.heapifyDown(i, array)
+
+		return array
 
 heap = MaxHeap()
-heap.insert(15)
-heap.insert(9)
-heap.insert(30)
-heap.insert(3)
-heap.insert(39)
-heap.insert(1)
+# heap.insert(9)
+# heap.insert(8)
+# heap.insert(10)
+# heap.insert(29)
+# heap.insert(39)
+# heap.insert(1)
+# heap.insert(100)
+# heap.insert(2)
+# heap.insert(4)
 
 # print('Our implementation\n',heap.array)
 # print(heap.remove())
@@ -87,13 +96,35 @@ heap.insert(1)
 # print(heap.remove())
 # print(heap.remove())
 # print(heap.remove())
+# print(heap.remove())
+# print(heap.remove())
+# print(heap.remove())
+# print(heap.remove())
+# print(heap.remove())
 
 
-input_array = [40,10,30,50,60,15]
-print(input_array)
+input_array = [9,8,10,29,39,1,2,4,100,0]
+print('input_array:',input_array,'len: ', len(input_array))
 
-heap.buildHeap(input_array)
-print(input_array)
+print('heap.array:',heap.array,'len: ', len(heap.array))
+
+heap.array = heap.buildHeap(input_array)
+
+print('heap.array:',heap.array,'len: ', len(heap.array))
+
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+print("remove(): ",heap.remove())
+# print(input_array)
 
 # from python_datastructures import MaxHeap
 

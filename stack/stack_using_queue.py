@@ -1,47 +1,40 @@
-from python_datastructures import Queue
-
-
 """
 Implement stack using queue
 
-trick -  use two queues
-		 1 - trick is we have to keep the last added element at front of queue
-		 2 - this can only be done if main queue is empty
-		 3 - first empty the main queue and move its item to second queue
-		 4 - add new element in empty main queue
-		 5 - copy element from the second queue to main queue
+we will use two queues called Queue1 and Queue2
 
-we have two queues q1 and q2
+push:
+- Queue1 is our main queue where we will add the element, before adding element to Queue1,
+  we will first deqeue all elements from Queue1 and move them to Queue2
+- after moving all elements we will insert the element in Queue1
+- after adding an element to Queue1, we will move all the elements from Queue2 to Queue1
 
-- q1 is our main queue where we will add the element
-- before adding element to q1,
-  we will first deqeue all elements from q1 and move them to q2
-- after moving all elements we will insert the element in q1
-- after adding an element to q1, we will move all the elements from q2 to q1
-- to dequeue an element, we will read from q1
+pop:
+- to pop an element, we will dequeue one element from Queue1
 
 """
 
+import queue
 
 class Stack:
 	def __init__(self):
-		self.q1 = Queue()
-		self.q2 = Queue()
+		self.q1 = queue.Queue()
+		self.q2 = queue.Queue()
 
 	def push(self, value):
 		
-		while self.q1.isEmpty() != True:
-			self.q2.enqueue(self.q1.dequeue().value)
+		while self.q1.empty() != True:
+			self.q2.put(self.q1.get())
 
-		self.q1.enqueue(value)
+		self.q1.put(value)
 
-		while self.q2.isEmpty() != True:
-			self.q1.enqueue(self.q2.dequeue().value)
+		while self.q2.empty() != True:
+			self.q1.put(self.q2.get())
 
 		return True
 
 	def pop(self):
-		return self.q1.dequeue().value
+		return self.q1.get()
 
 
 
@@ -72,3 +65,44 @@ print(s.pop())
 print(s.pop())
 print(s.pop())
 
+
+
+'''
+class Stack {
+    
+    constructor() {
+        this.q1 = new Array()
+        this.q2 = new Array()
+    }
+    
+    push(value) {
+        
+        while(this.q1.length != 0) {
+            this.q2.push(this.q1.shift())
+        }
+        
+        this.q1.push(value)
+        
+        while(this.q2.length) {
+            this.q1.push(this.q2.shift())
+        }
+    }
+    
+    pop() {
+        return this.q1.shift()
+    }
+}
+
+const stack = new Stack()
+
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+console.log(stack.q1)
+//  console.log(stack.pop())
+//  console.log(stack.pop())
+//  console.log(stack.pop())
+
+
+'''

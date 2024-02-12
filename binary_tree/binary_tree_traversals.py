@@ -1,4 +1,4 @@
-from python_datastructures import Queue
+from queue import Queue
 
 class Node:
     def __init__(self, value):
@@ -7,11 +7,34 @@ class Node:
         self.right = None
 
 class BinaryTree:
-    def __init__(self, root):
-        self.root = root
 
-    def preOrderTraversal(self):
-        "data-> left-> right"
+    root = None
+
+    def inOrderTraversalIterative(self):
+        
+        # LEFT -> DATA -> RIGHT
+        
+        stack = []
+        result = []
+        node = self.root
+
+        while node!=None or len(stack)!=0:
+
+            if node!=None:
+                stack.append(node)
+                node = node.left
+            else:
+                node = stack.pop()
+                result.append(node.value)
+                node = node.right
+        
+        return result
+
+
+    def preOrderTraversalIterative(self):
+        
+        #  DATA -> LEFT -> RIGHT
+        
         stack = []
         result = []
         node = self.root
@@ -28,26 +51,11 @@ class BinaryTree:
         
         return result
     
-    def inOrderTraversal(self):
-        "left-> data-> right"
-        stack = []
-        result = []
-        node = self.root
-
-        while node!=None or len(stack)!=0:
-
-            if node!=None:
-                stack.append(node)
-                node = node.left
-            else:
-                node = stack.pop()
-                result.append(node.value)
-                node = node.right
+    
+    def postOrderTraversalIterative(self):
         
-        return result
+        # LEFT -> RIGHT -> DATA
 
-    def postOrderTraversal(self):
-        "left -> right -> data"
         stack = []
         result = []
         node = self.root
@@ -73,8 +81,10 @@ class BinaryTree:
         return result
 
 
-    def reverseInOrderTraversal(self):
-        "right-> data-> left"
+    def reverseInOrderTraversalIterative(self):
+        
+        # RIGHT -> DATA -> LEFT 
+
         stack = []
         result = []
         node = self.root
@@ -91,7 +101,11 @@ class BinaryTree:
         
         return result
 
-    def levelOrderTraversal(self): 
+
+    def levelOrderTraversalIterative(self): 
+
+        # LEVEL BY LEVEL
+
         node = self.root
 
         result = []
@@ -100,36 +114,77 @@ class BinaryTree:
             return result
 
         queue = Queue()
-        queue.enqueue(node)
+        queue.put(node)
 
-        while queue.isEmpty() == False:
-            node = queue.dequeue().value
+        while queue.empty() == False:
+            node = queue.get()
             result.append(node.value)
 
             if node.left:
-                queue.enqueue(node.left)
+                queue.put(node.left)
 
             if node.right:
-                queue.enqueue(node.right)
+                queue.put(node.right)
 
         return result
 
-    def inOrderRecursiveTraversal(self, node):
-        if node:
-            self.inOrderRecursiveTraversal2(node.left)
-            self.inOrderRecursiveTraversal2(node.right)
-            print(node.value)           
-            
-    def inOrderRecursiveTraversal2(self, node):
+
+    def inOrderTraversalRecursive(self, node):
+
+        # LEFT -> DATA -> RIGHT
+
         if node is None:
             return []
 
-        left_result = self.inOrderRecursiveTraversal3(node.left)
-        right_result = self.inOrderRecursiveTraversal3(node.right)
+        left_result = self.inOrderTraversalRecursive(node.left)
+        right_result = self.inOrderTraversalRecursive(node.right)
         return left_result + [node.value] + right_result
 
+
+    def preOrderTraversalRecursive(self, node):
+
+        # DATA -> LEFT -> RIGHT
+
+        if node is None:
+            return []
+
+        left_result = self.preOrderTraversalRecursive(node.left)
+        right_result = self.preOrderTraversalRecursive(node.right)
+
+        return [node.value] + left_result + right_result
+
+
+    def postOrderTraversalRecursive(self, node):
+
+        # LEFT -> RIGHT -> DATA
+
+        if node is None:
+            return []
+
+        left_result = self.postOrderTraversalRecursive(node.left)
+        right_result = self.postOrderTraversalRecursive(node.right)
+
+        return left_result + right_result + [node.value]
+
+
+    def reverseInOrderTraversalRecursive(self, node):
+          
+          # RIGHT -> DATA -> LEFT
+
+          if node is None:
+            return []
+
+          left_result = self.reverseInOrderTraversalRecursive(node.left)
+          right_result = self.reverseInOrderTraversalRecursive(node.right)
+
+          return right_result + [node.value] + left_result
+
+
 if __name__ == "__main__":  
-    tree = BinaryTree(Node(1))
+   
+    tree = BinaryTree()
+
+    tree.root = Node(1)
     tree.root.left = Node(2)
     tree.root.right = Node(3)
 
@@ -139,8 +194,14 @@ if __name__ == "__main__":
     tree.root.right.left = Node(6)
     tree.root.right.right = Node(7)
 
-    print('PreOrderTraversal: ', tree.preOrderTraversal())
-    print('InOrderTraversal: ', tree.inOrderTraversal())
-    print('PostOrderTraversal: ', tree.postOrderTraversal())
-    print('ReverseInOrderTraversal: ', tree.reverseInOrderTraversal())
-    print('LevelOrderTraversal: ', tree.levelOrderTraversal())
+    print('InOrderTraversalIterative: ', tree.inOrderTraversalIterative())
+    print('PreOrderTraversalIterative: ', tree.preOrderTraversalIterative())
+    print('PostOrderTraversalIterative: ', tree.postOrderTraversalIterative())
+    print('ReverseInOrderTraversalIterative: ', tree.reverseInOrderTraversalIterative())
+    
+    print('\nLevelOrderTraversalIterative: ', tree.levelOrderTraversalIterative())
+
+    print('\ninOrderTraversalRecursive: ', tree.inOrderTraversalRecursive(tree.root))
+    print('preOrderTraversalRecursive: ', tree.preOrderTraversalRecursive(tree.root))
+    print('postOrderTraversalRecursive: ', tree.postOrderTraversalRecursive(tree.root))
+    print('reverseInOrderTraversalRecursive: ', tree.reverseInOrderTraversalRecursive(tree.root))

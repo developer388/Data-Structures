@@ -2,15 +2,16 @@
 Implement stack using linked list
 
 algo:
-    inititaly, we will a new node and set the top to new_node
+    inititaly, we will create a new linked list node and set the top pointer to new_node
     
+    head of the linked list will be considered as top pointer of stack
+
+
     push operation:
-    we will create new node and set its next to the top
-    we will set the top to newly added node
-    
+      new node will be always added to head of the linked list and top will be set to newly added node
+
     pop operation:
-    we will store the value of top node in result variable
-    we will set the top to top.next
+      value of head/top will be readed and head/top will be set to head/top .next
 
 */
 

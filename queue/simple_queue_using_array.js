@@ -1,4 +1,27 @@
 // Simple queue using array
+/*
+     front [ , , , , ] rear
+    
+    the end from where elements are added in the queue is called "rear"
+    the end from where elements are removed from the queue is called "front"
+
+    initially both front and rear are set to -1
+
+    during each enqueue() rear is incremented and value is set
+    front will always point to first value 
+
+    front is only incremented when we dequque() from the queue
+
+    enqueue() 
+         first increment the rear and then set the value
+         array[++rear] = value
+            
+    dequeue()
+        read the value at front and then increment it 
+
+*/
+
+
 class Queue {
     
     constructor(size) {
