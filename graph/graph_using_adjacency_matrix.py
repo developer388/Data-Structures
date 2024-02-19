@@ -1,19 +1,25 @@
 class Graph:
     def __init__(self, vertex_count):
-        self.matrix = []
+        self.adjancency_matrix = []
         for i in range(vertex_count):
-            self.matrix.append([0]*vertex_count)
+            self.adjancency_matrix.append([0]*vertex_count)
 
-    def addEdge(self, source, destination):
-        self.matrix[source][destination] = 1
+    def addDirectedEdge(self, source, destination):
+        self.adjancency_matrix[source][destination] = 1
 
-    def iterativeDFS(self, source):
+    def addUnDirectedEdge(self, source, destination):
+        self.adjancency_matrix[source][destination] = 1
+        self.adjancency_matrix[destination][source] = 1
+
+    def DFS(self, source):
         
-        visited = [False] * len(self.matrix)
-        stack = [source]
+        visited = [False] * len(self.adjancency_matrix)
+        stack = []
         result = []
 
-        while len(stack)!=0:
+        stack.append(source)
+
+        while len(stack) > 0:
 
             vertex = stack.pop()
 
@@ -21,8 +27,8 @@ class Graph:
                 result.append(vertex)
                 visited[vertex] = True
                 
-                for neighbour_index in range(len(self.matrix[vertex])): 
-                    if (self.matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
+                for neighbour_index in range(len(self.adjancency_matrix[vertex])): 
+                    if (self.adjancency_matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
                         stack.append(neighbour_index)
         return result
 
@@ -31,25 +37,25 @@ class Graph:
             result.append(vertex)
             visited[vertex] = True
 
-        for neighbour_index in range(len(self.matrix[vertex])):
-            if (self.matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
+        for neighbour_index in range(len(self.adjancency_matrix[vertex])):
+            if (self.adjancency_matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
                 self.recursiveDFS(result, visited, neighbour_index)
 
     def recursiveDFS2(self, result, visited, vertex):
         visited[vertex] = True
 
-        for neighbour_index in range(len(self.matrix[vertex])):
-            if (self.matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
+        for neighbour_index in range(len(self.adjancency_matrix[vertex])):
+            if (self.adjancency_matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
                 self.recursiveDFS2(result, visited, neighbour_index)
 
         result.append(vertex)
 
     def topologicalSortUsingDFS(self, vertex):
 
-        visited = [False] * len(self.matrix[vertex])
+        visited = [False] * len(self.adjancency_matrix[vertex])
         stack = []
 
-        for v in range(len(self.matrix)):
+        for v in range(len(self.adjancency_matrix)):
             if visited[v] == False:
                 self.recursiveDFS2(stack, visited, v)
 
@@ -62,11 +68,11 @@ class Graph:
 
     def topologicalSortUsingBFS(self):
 
-        in_degree = [0] * len(self.matrix)
+        in_degree = [0] * len(self.adjancency_matrix)
 
-        for vertex in range(len(self.matrix)):
-            for neighbour_index in range(len(self.matrix[vertex])):
-                if self.matrix[vertex][neighbour_index] == 1:
+        for vertex in range(len(self.adjancency_matrix)):
+            for neighbour_index in range(len(self.adjancency_matrix[vertex])):
+                if self.adjancency_matrix[vertex][neighbour_index] == 1:
                     in_degree[neighbour_index]+=1
 
         print('in_degree: ', in_degree)
@@ -85,8 +91,8 @@ class Graph:
             vertex = queue.pop(0)
             result.append(vertex)
 
-            for neighbour_index in range(len(self.matrix[vertex])):
-                if (self.matrix[vertex][neighbour_index] == 1):
+            for neighbour_index in range(len(self.adjancency_matrix[vertex])):
+                if (self.adjancency_matrix[vertex][neighbour_index] == 1):
                     in_degree[neighbour_index] -= 1
 
                     if in_degree[neighbour_index] == 0:
@@ -98,15 +104,15 @@ class Graph:
 
         result = []
         queue = [vertex]
-        visited = [False] *  len(self.matrix[vertex])
+        visited = [False] *  len(self.adjancency_matrix[vertex])
 
         while len(queue) != 0:
             vertex = queue.pop(0)
             result.append(vertex)
             visited[vertex] = True
 
-            for neighbour_index in range(len(self.matrix[vertex])):
-                if (self.matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
+            for neighbour_index in range(len(self.adjancency_matrix[vertex])):
+                if (self.adjancency_matrix[vertex][neighbour_index] == 1) and (visited[neighbour_index] == False):
                     queue.append(neighbour_index)
 
         return result
@@ -116,9 +122,9 @@ class Graph:
     def print(self):
         string = ''
 
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix)):
-               string += str(self.matrix[i][j])
+        for i in range(len(self.adjancency_matrix)):
+            for j in range(len(self.adjancency_matrix)):
+               string += str(self.adjancency_matrix[i][j])
 
             string +='\n'
 
